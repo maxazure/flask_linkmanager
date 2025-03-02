@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    image: maxazure/flask_linkmanager:latest
+    container_name: flask_linkmanager
+    restart: always
+    ports:
+      - "8011:8011"
+    env_file:
+      - .env
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+

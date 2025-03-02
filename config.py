@@ -5,16 +5,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-key'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
     
-    # 使用MySQL配置
+    # MySQL默认配置
     DB_TYPE = os.environ.get('DB_TYPE', 'mysql')
     
     # MySQL配置
     MYSQL_HOST = os.environ.get('MYSQL_HOST', 'localhost')
     MYSQL_PORT = os.environ.get('MYSQL_PORT', '3306')
     MYSQL_USER = os.environ.get('MYSQL_USER', 'linkmanager')
-    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', '')
+    MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', 'password')
     MYSQL_DB = os.environ.get('MYSQL_DB', 'linkmanager')
     
     # SQLite配置（保留作为备选）
@@ -46,11 +46,15 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     """测试环境配置"""
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    # 测试环境使用SQLite内存数据库
+    DB_TYPE = 'sqlite'
+    SQLITE_DB_PATH = ':memory:'
 
 class ProductionConfig(Config):
     """生产环境配置"""
     DEBUG = False
+    # 确保生产环境也默认使用MySQL
+    DB_TYPE = 'mysql'
 
 # 配置字典
 config = {
