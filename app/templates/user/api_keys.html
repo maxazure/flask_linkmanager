@@ -1,0 +1,127 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}API密钥管理 - 链接管理系统{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">用户菜单</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('user.profile') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-id-card"></i> 个人资料
+                </a>
+                <a href="{{ url_for('user.change_password') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-lock"></i> 修改密码
+                </a>
+                <a href="{{ url_for('user.api_keys') }}" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-key"></i> API密钥
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-key"></i> 生成新的API密钥</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('user.api_keys') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="form-group">
+                        {{ form.description.label(class="form-control-label") }}
+                        {% if form.description.errors %}
+                            {{ form.description(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.description.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.description(class="form-control", placeholder="例如：浏览器插件") }}
+                        {% endif %}
+                        <small class="form-text text-muted">描述有助于识别不同API密钥的用途</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.days_valid.label(class="form-control-label") }}
+                        {% if form.days_valid.errors %}
+                            {{ form.days_valid(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.days_valid.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.days_valid(class="form-control") }}
+                        {% endif %}
+                        <small class="form-text text-muted">密钥有效期（天），默认为365天</small>
+                    </div>
+                    
+                    <div class="form-group mt-4">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-list"></i> 我的API密钥</h4>
+            </div>
+            <div class="card-body">
+                {% if api_keys %}
+                    {% for api_key in api_keys %}
+                        <div class="api-key-box">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h5>{% if api_key.description %}{{ api_key.description }}{% else %}API密钥 #{{ api_key.id }}{% endif %}</h5>
+                                    <div class="api-key-value">
+                                        {% if api_key.is_active %}
+                                            {{ api_key.key }}
+                                        {% else %}
+                                            <span class="text-muted">已撤销</span>
+                                        {% endif %}
+                                    </div>
+                                    <small class="text-muted">
+                                        创建于: {{ api_key.created_at.strftime('%Y-%m-%d %H:%M') }}
+                                        {% if api_key.expires_at %}
+                                            <br>过期于: {{ api_key.expires_at.strftime('%Y-%m-%d %H:%M') }}
+                                        {% endif %}
+                                    </small>
+                                </div>
+                                <div>
+                                    {% if api_key.is_active %}
+                                        <button class="btn btn-sm btn-outline-primary copy-api-key" data-key="{{ api_key.key }}">
+                                            <i class="fas fa-copy"></i> 复制
+                                        </button>
+                                        <form action="{{ url_for('user.revoke_api_key', key_id=api_key.id) }}" method="POST" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger confirm-delete">
+                                                <i class="fas fa-trash"></i> 撤销
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <span class="badge badge-danger">已撤销</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info">
+                        您还没有创建任何API密钥
+                    </div>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <div class="alert alert-warning mb-0">
+                    <i class="fas fa-exclamation-triangle"></i> <strong>安全提示:</strong> API密钥提供对您账户的访问权限，请妥善保管，不要分享给他人。
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

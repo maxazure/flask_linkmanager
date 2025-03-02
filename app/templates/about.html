@@ -1,0 +1,90 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}关于 - 链接管理系统{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h1 class="h3 mb-0"><i class="fas fa-info-circle"></i> 关于链接管理系统</h1>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-7">
+                <h3>欢迎使用链接管理系统</h3>
+                <p class="lead">这是一个专为网络书签管理设计的应用程序，帮助您更有效地组织和访问您喜爱的网站。</p>
+                
+                <h4 class="mt-4">主要功能</h4>
+                <ul>
+                    <li><strong>链接管理</strong> - 保存您喜爱的网页链接，添加标题和描述以便日后查找。</li>
+                    <li><strong>分类整理</strong> - 通过自定义分类对链接进行组织，让您的收藏更加条理清晰。</li>
+                    <li><strong>标签系统</strong> - 使用标签为链接打上关键词，可以从多个维度对收藏进行分类。</li>
+                    <li><strong>API接口</strong> - 通过API接口，可以轻松集成浏览器插件，一键保存当前浏览的网页。</li>
+                    <li><strong>用户系统</strong> - 个人账户管理，保护您的隐私和数据安全。</li>
+                </ul>
+                
+                <h4 class="mt-4">开始使用</h4>
+                <p>
+                    如果您是新用户，请先<a href="{{ url_for('auth.register') }}">注册账号</a>。
+                    已有账号？请<a href="{{ url_for('auth.login') }}">登录</a>开始使用。
+                </p>
+            </div>
+            <div class="col-md-5">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-question-circle"></i> 常见问题</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="accordion" id="faqAccordion">
+                            <div class="card mb-0 border-0">
+                                <div class="card-header bg-transparent" id="faqHeading1">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link text-decoration-none text-left w-100" type="button" data-toggle="collapse" data-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1">
+                                            如何使用浏览器插件保存链接？
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="faqCollapse1" class="collapse show" aria-labelledby="faqHeading1" data-parent="#faqAccordion">
+                                    <div class="card-body">
+                                        首先在<a href="{{ url_for('user.api_keys') }}">API密钥</a>页面生成一个API密钥，然后在浏览器插件中设置此密钥即可使用。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-0 border-0">
+                                <div class="card-header bg-transparent" id="faqHeading2">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link text-decoration-none text-left w-100 collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+                                            如何分享我的收藏链接给他人？
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="faqCollapse2" class="collapse" aria-labelledby="faqHeading2" data-parent="#faqAccordion">
+                                    <div class="card-body">
+                                        目前系统暂不支持直接分享功能，您可以手动将链接复制给他人。未来版本会加入分享功能。
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-0 border-0">
+                                <div class="card-header bg-transparent" id="faqHeading3">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link text-decoration-none text-left w-100 collapsed" type="button" data-toggle="collapse" data-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+                                            如何获取帮助？
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="faqCollapse3" class="collapse" aria-labelledby="faqHeading3" data-parent="#faqAccordion">
+                                    <div class="card-body">
+                                        如有任何问题或建议，请联系系统管理员或查看在线文档。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-center">
+        <p class="text-muted mb-0">链接管理系统 v1.0 | 版权所有 © 2025</p>
+    </div>
+</div>
+{% endblock %}

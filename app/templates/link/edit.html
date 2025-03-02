@@ -1,0 +1,145 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}编辑链接 - 链接管理系统{% endblock %}
+
+{% block styles %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="fas fa-edit"></i> 编辑链接</h4>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('link.edit_link', link_id=link.id) }}">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                {{ form.title.label(class="form-control-label required") }}
+                {% if form.title.errors %}
+                    {{ form.title(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.title.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.title(class="form-control") }}
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                {{ form.url.label(class="form-control-label required") }}
+                {% if form.url.errors %}
+                    {{ form.url(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.url.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.url(class="form-control") }}
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                {{ form.description.label(class="form-control-label") }}
+                {% if form.description.errors %}
+                    {{ form.description(class="form-control is-invalid", rows=3) }}
+                    <div class="invalid-feedback">
+                        {% for error in form.description.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.description(class="form-control", rows=3) }}
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                {{ form.category_id.label(class="form-control-label required") }}
+                {% if form.category_id.errors %}
+                    {{ form.category_id(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.category_id.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.category_id(class="form-control") }}
+                {% endif %}
+                <small class="form-text text-muted">
+                    <a href="{{ url_for('link.add_category') }}" target="_blank">
+                        <i class="fas fa-plus-circle"></i> 创建新分类
+                    </a>
+                </small>
+            </div>
+            
+            <div class="form-group">
+                {{ form.tags.label(class="form-control-label") }}
+                {% if form.tags.errors %}
+                    {{ form.tags(class="form-control is-invalid", id="tags") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.tags.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.tags(class="form-control", id="tags") }}
+                {% endif %}
+                <small class="form-text text-muted">
+                    <a href="{{ url_for('link.add_tag') }}" target="_blank">
+                        <i class="fas fa-plus-circle"></i> 创建新标签
+                    </a>
+                </small>
+            </div>
+            
+            <div class="form-group mt-4">
+                {{ form.submit(class="btn btn-primary") }}
+                <a href="{{ url_for('link.list_links') }}" class="btn btn-secondary">取消</a>
+                <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#deleteModal">
+                    <i class="fas fa-trash"></i> 删除链接
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 删除确认模态框 -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">确认删除</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                确定要删除链接 <strong>{{ link.title }}</strong> 吗？此操作不可恢复。
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <form action="{{ url_for('link.delete_link', link_id=link.id) }}" method="POST">
+                    <button type="submit" class="btn btn-danger">确认删除</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // 初始化标签多选框
+        $('#tags').select2({
+            placeholder: '选择标签',
+            allowClear: true,
+            width: '100%'
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}个人资料 - 链接管理系统{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">用户菜单</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('user.profile') }}" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-id-card"></i> 个人资料
+                </a>
+                <a href="{{ url_for('user.change_password') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-lock"></i> 修改密码
+                </a>
+                <a href="{{ url_for('user.api_keys') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-key"></i> API密钥
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-user-edit"></i> 编辑个人资料</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('user.profile') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="form-group">
+                        {{ form.username.label(class="form-control-label required") }}
+                        {% if form.username.errors %}
+                            {{ form.username(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.username(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.email.label(class="form-control-label required") }}
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.email(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group mt-4">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="text-muted">
+                    <small>账号创建于: {{ current_user.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                    {% if current_user.last_login %}
+                    <br>
+                    <small>上次登录: {{ current_user.last_login.strftime('%Y-%m-%d %H:%M') }}</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

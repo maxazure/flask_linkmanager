@@ -1,0 +1,67 @@
+/* 全局样式 */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+/* 链接卡片样式 */
+.link-card {
+    transition: all 0.3s ease;
+}
+
+.link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.link-tag {
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+/* 仪表盘卡片 */
+.dashboard-card {
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* API密钥样式 */
+.api-key-box {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #e9ecef;
+}
+
+.api-key-value {
+    font-family: monospace;
+    word-break: break-all;
+}
+
+/* 自定义表单样式 */
+.form-group label {
+    font-weight: 500;
+}
+
+.required:after {
+    content: "*";
+    color: red;
+    margin-left: 3px;
+}
+
+/* 页脚样式 */
+.footer {
+    margin-top: auto;
+}

@@ -1,0 +1,148 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}仪表盘 - 链接管理系统{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-tachometer-alt"></i> 我的仪表盘</h1>
+    <a href="{{ url_for('link.add_link') }}" class="btn btn-success">
+        <i class="fas fa-plus"></i> 添加新链接
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white dashboard-card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase">我的链接</h6>
+                        <h1 class="display-4">{{ links_count }}</h1>
+                    </div>
+                    <div>
+                        <i class="fas fa-link fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-top-0">
+                <a href="{{ url_for('link.list_links') }}" class="text-white">
+                    查看所有链接 <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white dashboard-card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase">我的分类</h6>
+                        <h1 class="display-4">{{ categories_count }}</h1>
+                    </div>
+                    <div>
+                        <i class="fas fa-folder fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-top-0">
+                <a href="{{ url_for('link.list_categories') }}" class="text-white">
+                    管理分类 <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-info text-white dashboard-card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase">标签</h6>
+                        <h1 class="display-4">{{ tags_count }}</h1>
+                    </div>
+                    <div>
+                        <i class="fas fa-tags fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-top-0">
+                <a href="{{ url_for('link.list_tags') }}" class="text-white">
+                    管理标签 <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if recent_links %}
+<div class="card mt-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="fas fa-history"></i> 最近添加的链接</h4>
+    </div>
+    <div class="list-group list-group-flush">
+        {% for link in recent_links %}
+        <div class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1">
+                        <a href="{{ link.url }}" target="_blank">{{ link.title }}</a>
+                    </h5>
+                    <p class="mb-1 text-muted">
+                        <small>
+                            <i class="fas fa-folder"></i> {{ link.category.name }}
+                            | <i class="fas fa-clock"></i> {{ link.created_at.strftime('%Y-%m-%d %H:%M') }}
+                            {% if link.tags %}
+                            | <i class="fas fa-tags"></i> 
+                            {% for tag in link.tags %}
+                            <span class="badge badge-secondary">{{ tag.name }}</span>
+                            {% endfor %}
+                            {% endif %}
+                        </small>
+                    </p>
+                    {% if link.description %}
+                    <p class="mb-0 text-truncate" style="max-width: 500px;">{{ link.description }}</p>
+                    {% endif %}
+                </div>
+                <div>
+                    <a href="{{ url_for('link.edit_link', link_id=link.id) }}" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="card-footer">
+        <a href="{{ url_for('link.list_links') }}" class="btn btn-primary">查看全部链接</a>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info mt-4">
+    <i class="fas fa-info-circle"></i> 您还没有添加任何链接。
+    <a href="{{ url_for('link.add_link') }}" class="alert-link">立即添加</a>
+</div>
+{% endif %}
+
+<div class="card mt-4">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="fas fa-lightbulb"></i> 快速提示</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h5><i class="fas fa-browser"></i> 使用浏览器插件</h5>
+                <p>通过 API 密钥设置浏览器插件，一键保存当前浏览页面。</p>
+                <a href="{{ url_for('user.api_keys') }}" class="btn btn-sm btn-outline-primary">
+                    获取 API 密钥
+                </a>
+            </div>
+            <div class="col-md-6">
+                <h5><i class="fas fa-folder-plus"></i> 创建分类</h5>
+                <p>创建分类可以更好地组织您的链接。</p>
+                <a href="{{ url_for('link.add_category') }}" class="btn btn-sm btn-outline-primary">
+                    添加分类
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
